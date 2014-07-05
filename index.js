@@ -34,31 +34,31 @@ streams.add('multimap', function(iterator) {
       });
     }
   });
-}
+});
 
 streams.add('filter', function(iterator) {
   return new IterateStream(iterator, function(result, object) {
     if (result) this.push(object);
   });
-}
+});
 
 streams.add('each', function(iterator) {
   return new IterateStream(iterator, function(result) {
     this.push(object);
   });
-}
+});
 
 streams.add('count', function(callback) {
   return new ReduceStream(function(total) {
     return total + 1;
   }, 0, callback);
-}
+});
 
 streams.add('sum', function(callback) {
   return new ReduceStream(function(total, value) {
     return total + value;
   }, 0, callback);
-}
+});
 
 streams.add('stats', function(callback) {
   var stats = {
@@ -82,4 +82,4 @@ streams.add('stats', function(callback) {
     }
     return stats;
   }, stats, callback);
-}
+});
