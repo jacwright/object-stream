@@ -1,0 +1,14 @@
+{
+	"name": "object-streams",
+	"version": "0.1.0",
+	"description": "Stream utilities to make working with object streams simple.",
+	"author": "Jacob Wright <jacwright@gmail.com> (http://jacwright.com)",
+	"homepage": "https://github.com/jacwright/object-streams",
+	"repository": {
+		"type": "git",
+		"url": "git@github.com:jacwright/object-streams.git"
+	},
+	"engines": {
+		"node": ">=0.10"
+	}
+}
