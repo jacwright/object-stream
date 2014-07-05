@@ -83,3 +83,11 @@ streams.add('stats', function(callback) {
     return stats;
   }, stats, callback);
 });
+
+streams.add('split', function(splitter) {
+  var streams = [];
+  for (var i = 0; i < splitter.length; i++) {
+    streams.push(this.pipe(new ObjectStream()));
+  }
+  return splitter.apply(null, streams);
+});

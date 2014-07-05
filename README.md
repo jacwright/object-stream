@@ -1,6 +1,6 @@
 # ObjectStreams
 
-A node.js streams utility for working with object streams.
+Node.js utility for working with streams of objects.
 
 ## Install
 
@@ -197,6 +197,21 @@ stream.map(function(object) {
   console.log(stats.sumsqr);
 });
 ```
+
+## Split
+
+You can split an object stream into many using `split`. You will get a new
+stream for as many arguments as your splitter function provides. Whatever is
+returned in your splitter function will be returned from the `split` function.
+
+```javascript
+stream.split(function(stream1, stream2, stream3) {
+  stream1.filter(filterPromos).count(console.log);
+  stream2.filter(filterNonPromos).count(console.log);
+  return stream3.map(pricing);
+}).sum(console.log);
+```
+
 ## Extending ObjectStream
 
 You may add new iterators, reducers, or other types of functionality useful in
