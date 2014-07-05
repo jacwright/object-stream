@@ -10,6 +10,14 @@ streams.ObjectStream = ObjectStream;
 streams.IterateStream = IterateStream;
 streams.ReduceStream = ReduceStream;
 
+// Add levelup support to add a scan method (as in a table scan)
+streams.level = function level(db) {
+  db.scan = scan;
+}
+function scan(options) {
+  return this.createReadStream(options).pipe(streams());
+}
+
 // Add a new stream functino to ObjectStream.prototype. It should return a new
 // ObjectStream subclass.
 streams.add = function add(name, func) {
@@ -18,6 +26,14 @@ streams.add = function add(name, func) {
     return this.pipe(func);
   }
 }
+
+streams.add('iterate', function(iterator, handler) {
+  return new IterateStream(iterator, handler);
+});
+
+streams.add('reduce', function(reducer, initialValue, callback) {
+  return new ReduceStream(reducer, initialValue, callback);
+});
 
 streams.add('map', function(iterator) {
   return new IterateStream(iterator, function(result) {

@@ -241,3 +241,45 @@ streams.ReduceStream;
 If you need to convert a stream of JSON text into objects, check out
 https://github.com/dominictarr/JSONStream which will parse JSON as it streams
 in.
+
+## Use with [LevelUP](https://github.com/rvagg/node-levelup)
+
+```javascript
+var levelup = require('levelup');
+var streams = require('object-streams');
+
+var db = streams.level(levelup('/path/to/db', {
+  valueEncoding: 'json'
+}));
+
+db.scan().filter(function(data) {
+  console.log(data.key);
+  var object = data.value;
+  return object.isPublished;
+});
+
+// only grab the values
+db.scan({ keys: false }).filter(function(object) {
+  return object.isPublished;
+});
+
+db.scan({ start: 'posts/', end: 'posts/~~', keys: false })
+  .split(function(countPublished, commonWords) {
+    
+    countPublished.filter(function(post) {
+      return post.isPublished;
+    }).count(function(count) {
+      console.log(count);
+    });
+
+    return commonWords.reduce(function(counts, object) {
+      var words = getWords(object.body);
+      addWords(counts, words);
+    }, {});
+  }).on('data', function(wordCounts) {
+    console.log(wordCounts);
+  });
+  
+
+
+```
